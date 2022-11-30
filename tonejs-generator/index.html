@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generative Music</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style type="text/css">
+    body,
+    html {
+      margin: 0;
+      background: #111111;
+      color: #f0f0f0;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+    }
+
+    .demoTitle {
+      font-size: 2em;
+      font-weight: 800;
+      margin: auto;
+      padding: 80px;
+      margin-bottom: 0.5em;
+      text-align: center;
+    }
+
+    .play {
+      background: none;
+      border: 2px solid rgb(0, 125, 242);
+      border-radius: 20px;
+      padding: 10px 30px;
+      color: white;
+      font-size: 14pt;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .play:hover {
+      background: rgb(3, 77, 146);
+    }
+
+  </style>
+  <script type="module" src="./generator.js"></script>
+</head>
+
+<body>
+  <div class="demoTitle">
+    <h1>Generative Music Project</h1>
+    <button class="play">Play</button>
+  </div>
+</body>
+
+</html>
