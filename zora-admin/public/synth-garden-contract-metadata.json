@@ -1,8 +1,0 @@
-{
-  "name": "Synth Garden",
-  "description": "Synth Garden is a collection of generative songs.",
-  "image": "synth-garden.vercel.app/image.png",
-  "external_link": "synth-garden.vercel.app",
-  "seller_fee_basis_points": 100,
-  "fee_recipient": "0xC65082472EC1F28af24Bec3d871E734854Df0B48"
-}
