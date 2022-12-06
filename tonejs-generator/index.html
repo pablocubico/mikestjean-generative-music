@@ -3,9 +3,9 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generative Music</title>
+  <title>Synth Garden</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
@@ -30,7 +30,7 @@
       text-align: center;
     }
 
-    .play {
+    .button {
       background: none;
       border: 2px solid rgb(0, 125, 242);
       border-radius: 20px;
@@ -41,19 +41,75 @@
       cursor: pointer;
     }
 
-    .play:hover {
+    .button:hover {
       background: rgb(3, 77, 146);
     }
 
+    .debugPattern {
+      margin-top: 20px;
+      border: 1px solid #555;
+      height: 40px;
+      display: flex;
+      width: 100%;
+    }
+
+    .debugPatternNote {
+      border: 1px solid white;
+      background: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12pt;
+      font-weight: 600;
+    }
+
+    h1,
+    h4 {
+      margin: 0;
+    }
+
+    h4 {
+      font-size: 1em;
+      font-weight: 600;
+      margin-bottom: 0.5em;
+      color: #eee;
+    }
+
+    p {
+      color: #999;
+    }
+
+    .debugPanel {
+      padding: 20px;
+      margin: 20px auto;
+      background: #222;
+      border-radius: 10px;
+      max-width: 800px;
+    }
+
   </style>
-  <script type="module" src="./generator.js"></script>
 </head>
 
 <body>
+  <div id="app"></div>
+  <script type="module" src="/generator.js"></script>
+
   <div class="demoTitle">
-    <h1>Generative Music Project</h1>
-    <button class="play">Play</button>
+    <h1>Synth Garden</h1>
   </div>
+
+  <div class="debugPanel">
+    <h4>Embeddable Module Tester</h4>
+    <p class="legend">
+      Legend: 16 = sixteenth note, 16r = sixteenth rest.
+    </p>
+    <button class="button" id="generate">Generate</button>
+    <button class="button" id="stop">Stop</button>
+
+    <div class="debugPattern">
+    </div>
+  </div>
+
 </body>
 
 </html>
