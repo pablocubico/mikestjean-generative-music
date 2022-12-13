@@ -1,13 +1,12 @@
 import { GeneratorClass } from "./generator";
+import { start as ToneStart, Transport } from "tone";
 
 const generator = new GeneratorClass();
 
-console.log("***generator", generator);
-
 const btn = document.querySelector("#generate");
 btn.addEventListener("click", async () => {
-  await Tone.start();
-  Tone.Transport.bpm.value = 100;
+  await ToneStart();
+  Transport.bpm.value = 100;
 
   const debugPatternDiv = document.querySelector(".debugPattern");
 
@@ -21,7 +20,7 @@ btn.addEventListener("click", async () => {
 
   generator.start();
 
-  Tone.Transport.start();
+  Transport.start();
 });
 
 const stopButton = document.querySelector("#stop");

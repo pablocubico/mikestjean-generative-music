@@ -1,4 +1,4 @@
-import "https://unpkg.com/tone@14.7.77/build/Tone.js";
+import { Time, Part, MembraneSynth } from "tone";
 
 const TIME_SIGNATURE = "4/4";
 
@@ -74,7 +74,7 @@ function notesToTonePart(notes) {
         },
       });
     }
-    startTime += Tone.Time(
+    startTime += Time(
       parseInt(note.duration.replace("r", "")) + "n"
     ).toSeconds();
   });
@@ -90,7 +90,7 @@ export class GeneratorClass {
   onRandomNotesChange = () => {};
 
   constructor() {
-    this.synth = new Tone.MembraneSynth().toDestination();
+    this.synth = new MembraneSynth().toDestination();
   }
 
   stop = () => {
@@ -115,12 +115,11 @@ export class GeneratorClass {
 
     this.onRandomNotesChange(tempRandomNotes);
 
-    this.currentPart = new Tone.Part((time, value) => {
+    this.currentPart = new Part((time, value) => {
       this.playNote(time, value.note, value.velocity, value.duration);
     }, partNotes);
 
-    this.currentPart.loopEnd =
-      Tone.Time(`${timeSignatureUnit}n`).toSeconds() * 4;
+    this.currentPart.loopEnd = Time(`${timeSignatureUnit}n`).toSeconds() * 4;
     this.currentPart.loop = true;
 
     this.currentPart.start("+0");
