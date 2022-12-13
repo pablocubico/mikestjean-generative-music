@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build-upload": "vite build && node backend/toIPFS_web3storage.js"
   },
   "devDependencies": {
     "axios": "^1.2.1",

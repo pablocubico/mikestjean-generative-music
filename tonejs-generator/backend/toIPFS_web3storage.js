@@ -2,7 +2,9 @@ import process from "process";
 import minimist from "minimist";
 import { Web3Storage, getFilesFromPath } from "web3.storage";
 import * as dotenv from "dotenv";
-dotenv.config();
+dotenv.config({
+  path: "./.env.local",
+});
 
 const token = process.env.WEB3_STORAGE_TOKEN;
 
