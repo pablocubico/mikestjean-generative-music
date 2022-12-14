@@ -1,6 +1,6 @@
 import process from "process";
 import minimist from "minimist";
-import { Web3Storage, getFilesFromPath } from "web3.storage";
+import { File, Web3Storage, getFilesFromPath } from "web3.storage";
 import * as dotenv from "dotenv";
 dotenv.config({
   path: "./.env.local",
@@ -23,11 +23,21 @@ async function main() {
 
   const path = "dist/index.html";
 
+  const fileData = {
+    name: "Song #123",
+    key: "Ab Melodic Minor",
+    mood: "Soulful",
+  };
+
+  const buffer = Buffer.from(JSON.stringify(fileData));
+  const dataFile = new File([buffer], "metadata.json");
+
   const storage = new Web3Storage({ token });
   const files = [];
 
   const pathFiles = await getFilesFromPath(path);
   files.push(...pathFiles);
+  files.push(dataFile);
 
   console.log(`Uploading ${files.length} files`);
   const cid = await storage.put(files);
