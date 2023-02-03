@@ -1,127 +1,91 @@
-import { Time, Part, MembraneSynth } from "tone";
+import { Transport, Gain, Reverb, Delay } from "tone";
 
-const TIME_SIGNATURE = "4/4";
-
-// 16 = sixteenth note,
-// 16r = sixteenth rest
-const RHYTHMIC_CELLS = [
-  "1",
-  "1r",
-  "2",
-  "2r",
-  "4",
-  "4r",
-  "8 8",
-  "8 8r",
-  "8r 8",
-  "16 16 16 16",
-  "16 16 8",
-  "16 8 16",
-  "8 16 16",
-  "16r 16 16 16",
-  "16 16r 16 16",
-  "16 16 16r 16",
-  "16 16 16 16r",
-];
-
-function getSuitablePatterns(patterns, maxDuration) {
-  const suitablePatterns = patterns.filter(function (pattern) {
-    let duration = 0;
-    pattern.split().forEach(function (note) {
-      duration = duration + 1 / parseInt(note.replace("r", ""));
-    });
-    return duration <= maxDuration;
-  });
-  return suitablePatterns[Math.floor(Math.random() * suitablePatterns.length)];
-}
-
-/**
- * Get random notes for 1 bar
- */
-function getRandomNotes(timeSignature, defaultNote = "C4") {
-  const noteAmount = parseInt(timeSignature.split("/")[0], 10);
-  const noteType = parseInt(timeSignature.split("/")[1], 10);
-  const notes = [];
-  let remainingDuration = noteAmount / noteType;
-
-  while (remainingDuration > 0) {
-    const pattern = getSuitablePatterns(RHYTHMIC_CELLS, remainingDuration);
-    pattern.split(" ").forEach(function (note) {
-      notes.push({ notes: [defaultNote], duration: note });
-      remainingDuration =
-        remainingDuration - 1 / parseInt(note.replace("r", ""));
-    });
-  }
-  return notes;
-}
-
-/**
- * Convert notes to Tone.js notation
- */
-function notesToTonePart(notes) {
-  let startTime = 0;
-  const partNotes = [];
-
-  notes.forEach((note, noteIndex) => {
-    if (note.duration.indexOf("r") == -1) {
-      partNotes.push({
-        time: startTime,
-        note: "C2",
-        velocity: 0.5,
-        duration: note.duration,
-        data: {
-          index: noteIndex,
-        },
-      });
-    }
-    startTime += Time(
-      parseInt(note.duration.replace("r", "")) + "n"
-    ).toSeconds();
-  });
-
-  return partNotes;
-}
-
+import { Kick } from "./instruments/kick";
+import { Pad } from "./instruments/pad";
+import { Plucked } from "./instruments/plucked";
+import { Bass } from "./instruments/bass";
 export class GeneratorClass {
-  outputs = [];
+  masterOutput = null;
+  masterReverb = null;
+  masterDelay = null;
+  instruments = [];
   currentPart = null;
   randomNotes = [];
-  synth = null;
   onRandomNotesChange = () => {};
 
   constructor() {
-    this.synth = new MembraneSynth().toDestination();
+    this.masterOutput = new Gain(0.5).toDestination();
+    this.masterReverb = new Reverb();
+    this.masterDelay = new Delay("8n.");
+
+    this.masterReverb.set({
+      wet: 0.15,
+      decay: 10,
+    });
+
+    this.masterReverb.connect(this.masterOutput);
+    this.masterDelay.connect(this.masterReverb);
+
+    const kick = new Kick();
+    this.addInstrument(kick);
+
+    const pad = new Pad();
+    this.addInstrument(pad);
+
+    const plucked = new Plucked();
+    this.addInstrument(plucked);
+
+    const bass = new Bass();
+    this.addInstrument(bass);
   }
 
   stop = () => {
-    if (this.currentPart) {
-      this.currentPart.stop();
-      this.currentPart.cancel();
-      this.currentPart.dispose();
-    }
-  };
-
-  playNote = (time, note, velocity, duration) => {
-    this.synth.triggerAttackRelease("C2", duration + "n", time, velocity);
+    this.instruments.forEach((instrument) => {
+      instrument.stop();
+    });
   };
 
   start = () => {
     this.stop();
 
-    const timeSignatureUnit = TIME_SIGNATURE.split("/")[1];
+    this.instruments.forEach((instrument) => {
+      instrument.generate();
+      instrument.start();
+    });
 
-    const tempRandomNotes = getRandomNotes(TIME_SIGNATURE);
-    const partNotes = notesToTonePart(tempRandomNotes);
+    this.render();
 
-    this.onRandomNotesChange(tempRandomNotes);
+    Transport.start();
+  };
 
-    this.currentPart = new Part((time, value) => {
-      this.playNote(time, value.note, value.velocity, value.duration);
-    }, partNotes);
+  render = () => {
+    const instrumentsVisualizer = document.getElementById(
+      "instrumentsVisualizer"
+    );
+    instrumentsVisualizer.innerHTML = "";
 
-    this.currentPart.loopEnd = Time(`${timeSignatureUnit}n`).toSeconds() * 4;
-    this.currentPart.loop = true;
+    this.instruments.forEach((instrument) => {
+      const labelDiv = document.createElement("DIV");
+      labelDiv.classList.add("debugPatternLabel");
 
-    this.currentPart.start("+0");
+      labelDiv.innerHTML = instrument.name;
+      instrumentsVisualizer.appendChild(labelDiv);
+
+      const debugPatternDiv = document.createElement("DIV");
+      debugPatternDiv.classList.add("debugPattern");
+
+      const partNotes = instrument.currentPattern;
+      partNotes.forEach((note) => {
+        const duration = parseInt(note.duration.replace("r", ""));
+        debugPatternDiv.innerHTML += `<div class="debugPatternNote" style="width: calc(100%/${duration})">${note.duration}</div>`;
+      });
+
+      instrumentsVisualizer.appendChild(debugPatternDiv);
+    });
+  };
+
+  addInstrument = (instrument) => {
+    this.instruments.push(instrument);
+    instrument.connectTo(this.masterDelay);
   };
 }

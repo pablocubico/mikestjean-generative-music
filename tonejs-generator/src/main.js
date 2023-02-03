@@ -5,22 +5,11 @@ const generator = new GeneratorClass();
 
 const btn = document.querySelector("#generate");
 btn.addEventListener("click", async () => {
+  console.log("*** 'Generate' Clicked");
   await ToneStart();
-  Transport.bpm.value = 100;
-
-  const debugPatternDiv = document.querySelector(".debugPattern");
-
-  generator.onRandomNotesChange = (randomNotes) => {
-    debugPatternDiv.innerHTML = "";
-    randomNotes.forEach((note) => {
-      const duration = parseInt(note.duration.replace("r", ""));
-      debugPatternDiv.innerHTML += `<div class="debugPatternNote" style="width: calc(100%/${duration})">${note.duration}</div>`;
-    });
-  };
+  Transport.bpm.value = 60;
 
   generator.start();
-
-  Transport.start();
 });
 
 const stopButton = document.querySelector("#stop");
