@@ -29,7 +29,7 @@ export class Bass extends Instrument {
 
   generate() {
     const { partNotes, notesWithRests } = generatePartNotes({
-      rhythmicCells: ["2", "4", "8", "4 4", "8 8"],
+      rhythmicCells: ["2", "4", "8 8"],
     });
     this.instrumentPart = this.createPart(partNotes);
     this.currentPattern = notesWithRests;

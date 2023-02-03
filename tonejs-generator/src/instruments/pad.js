@@ -28,7 +28,7 @@ export class Pad extends Instrument {
 
   generate() {
     const { partNotes, notesWithRests } = generatePartNotes({
-      rhythmicCells: ["1", "2"],
+      rhythmicCells: ["1", "2", "2r", "1r"],
     });
     this.instrumentPart = this.createPart(partNotes);
     this.currentPattern = notesWithRests;
