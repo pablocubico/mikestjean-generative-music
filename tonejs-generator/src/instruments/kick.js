@@ -5,7 +5,18 @@ import { generatePartNotes } from "../helpers";
 
 export class Kick extends Instrument {
   constructor() {
-    const kickMembrane = new MembraneSynth();
+    const kickMembrane = new MembraneSynth({
+      pitchDecay: 0.05,
+      octaves: 10,
+      oscillator: {
+        type: "sine"
+      },
+      envelope: {
+        attack: 0.001,
+        decay: 0.2,
+        sustain: 0.2,
+        release: 0.2
+      });
 
     const kickFilter = new Filter(400, "lowpass");
     kickMembrane.connect(kickFilter);
