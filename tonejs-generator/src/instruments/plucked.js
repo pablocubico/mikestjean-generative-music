@@ -21,7 +21,7 @@ export class Plucked extends Instrument {
 
     this.toneJsInstrument.triggerAttackRelease(
       randomNote,
-      duration + "n",
+      duration + "32n",
       time,
       velocity
     );
