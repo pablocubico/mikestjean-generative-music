@@ -1,22 +1,25 @@
 import { Instrument } from "../instrument";
 import { MembraneSynth } from "tone";
+import { Filter } from "tone";
 import { generatePartNotes } from "../helpers";
 
 export class Kick extends Instrument {
   constructor() {
     const kickMembrane = new MembraneSynth();
-    const kickFilter = new Tone.Filter(400, "lowpass");
     kickMembrane.envelope.attack = 0.01;
     kickMembrane.envelope.decay = 0.2;
     kickMembrane.envelope.sustain = 0.2;
     kickMembrane.envelope.release = 0.2;
+    
+    const kickFilter = new Filter(400, "lowpass");
     kickMembrane.connect(kickFilter);
+    
     super("Kick", kickMembrane);
   }
 
   playNote = (time, note, velocity, duration) => {
     this.toneJsInstrument.triggerAttackRelease(
-      "C2",
+      "C1",
       duration + "n",
       time,
       velocity
