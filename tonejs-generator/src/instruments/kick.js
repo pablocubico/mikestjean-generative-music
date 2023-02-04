@@ -4,7 +4,12 @@ import { generatePartNotes } from "../helpers";
 
 export class Kick extends Instrument {
   constructor() {
-    super("Kick", new MembraneSynth());
+    const kickMembrane = new MembraneSynth();
+    kickMembrane.envelope.attack = 0.01;
+    kickMembrane.envelope.decay = 0.2;
+    kickMembrane.envelope.sustain = 0.2;
+    kickMembrane.envelope.release = 0.2;
+    super("Kick", kickMembrane);
   }
 
   playNote = (time, note, velocity, duration) => {
