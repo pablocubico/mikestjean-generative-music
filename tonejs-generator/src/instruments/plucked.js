@@ -8,8 +8,8 @@ export class Plucked extends Instrument {
   constructor() {
     const genPluck = new PluckSynth();
     genPluck.resonance = 1;
-    genPluck.dampening = 400;
-    genPluck.release = 0.5;
+    genPluck.dampening = 4000;
+    genPluck.release = 2;
     super("Plucked", genPluck);
     this.pingPongDelay = new PingPongDelay("8n", 0.2).toDestination();
     this.toneJsInstrument.volume.value = -7;
@@ -22,7 +22,7 @@ export class Plucked extends Instrument {
 
     this.toneJsInstrument.triggerAttackRelease(
       randomNote,
-      duration + "32n",
+      duration + "n",
       time,
       velocity
     );
