@@ -7,7 +7,8 @@ export class Plucked extends Instrument {
 
   constructor() {
     const genPluck = new PluckSynth();
-    genPluck.resonance = 0.5;
+    genPluck.resonance = 0.7;
+    genPluck.dampening = 4000;
     super("Plucked", genPluck);
     this.pingPongDelay = new PingPongDelay("8n", 0.2).toDestination();
     this.toneJsInstrument.volume.value = -7;
