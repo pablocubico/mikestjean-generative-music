@@ -17,7 +17,7 @@ export class Kick extends Instrument {
         sustain: 0.2,
         release: 0.2
       });
-    
+    //
     const kickFilter = new Filter(400, "lowpass");
     kickMembrane.connect(kickFilter);
     
