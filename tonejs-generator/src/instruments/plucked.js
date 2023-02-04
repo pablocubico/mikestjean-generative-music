@@ -7,7 +7,7 @@ export class Plucked extends Instrument {
 
   constructor() {
     const genPluck = new PluckSynth();
-    genPluck.resonance = 0.98;
+    genPluck.resonance = 1;
     genPluck.dampening = 400;
     genPluck.release = 0.5;
     super("Plucked", genPluck);
